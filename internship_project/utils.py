@@ -5,7 +5,7 @@ import google.generativeai as genai
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # using free version model (this one works)
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-2.0-flash")
 
 def generate_recommendation(row):
     # build prompt with some details from user row
