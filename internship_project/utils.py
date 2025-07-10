@@ -1,3 +1,4 @@
+import os
 import google.generativeai as genai 
 
 # set gemini api key (replace with urs)
