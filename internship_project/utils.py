@@ -1,7 +1,7 @@
 import google.generativeai as genai 
 
 # set gemini api key (replace with urs)
-genai.configure(api_key="your api key")
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # using free version model (this one works)
 model = genai.GenerativeModel("gemini-1.5-flash")
