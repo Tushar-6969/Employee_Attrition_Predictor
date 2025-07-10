@@ -1,0 +1,17 @@
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE configs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+
+# Optional: ignore large datasets
+*.csv
+
+# Keep the trained model
+!churn_model.pkl
