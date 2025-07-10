@@ -1,12 +1,13 @@
-import google.generativeai as genai
+import google.generativeai as genai 
 
-# Set your Gemini API key
+# set gemini api key (replace with urs)
 genai.configure(api_key="your api key")
 
-# Use a free plan-compatible model
+# using free version model (this one works)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 def generate_recommendation(row):
+    # build prompt with some details from user row
     prompt = f"""
     This employee is predicted to leave.
 
@@ -22,7 +23,7 @@ def generate_recommendation(row):
     """
 
     try:
-        response = model.generate_content(prompt)
-        return response.text.strip()
+        response = model.generate_content(prompt)  # gemini response
+        return response.text.strip()  # final clean text
     except Exception as e:
-        return f"Gemini Error: {str(e)}"
+        return f"Gemini Error: {str(e)}"  # show err if any
