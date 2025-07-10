@@ -10,7 +10,7 @@
 
 This project addresses **Use Case 2** from the AI Intern assignment:  
 > ⚠️ **Predict the risk of employee attrition using ML**, and use a **Gemini AI agent** to recommend HR actions for at-risk cases.
-
+Live Link: https://employee-attrition-predictor-ycoi.onrender.com/
 ---
 
 ## 🎯 What It Does
