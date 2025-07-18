@@ -1,178 +1,183 @@
+# ai intern assignment — use case 2
 
-# AI Intern Assignment — Use Case 2  
-### 👤 Employee Attrition Risk Prediction & HR Recommendation Agent  
-**Author**: Tushar Rathor  
-**Tech Stack**: Python · Flask · scikit-learn · Google Gemini API
+### 👤 employee attrition risk prediction + rag-enhanced hr recommendation agent
 
----
-
-## 📌 Overview
-
-This project addresses **Use Case 2** from the AI Intern assignment:  
-> ⚠️ **Predict the risk of employee attrition using ML**, and use a **Gemini AI agent** to recommend HR actions for at-risk cases.
-
----
-Live Link: https://employee-attrition-predictor-ycoi.onrender.com/
-## 🎯 What It Does
-
-- ✅ Predicts whether an employee is likely to leave using a trained ML model
-- ✅ Uses Google Gemini (`gemini-1.5-flash`) to suggest 2 HR actions for each risky employee
-- ✅ Displays all predictions and recommendations in a clean web interface
-- ✅ Includes error handling and a loading spinner for better UX
+author tushar rathor
+technology stack python · flask · scikit-learn · chromadb · sentence transformers · google gemini api
 
 ---
 
-## 📁 Folder Structure
+##  overview
+
+this project addresses use case 2 from the ai intern assignment
+
+predict employee attrition risk using ml and use a rag-enhanced gemini ai agent to recommend hr actions for at-risk employees
+
+---
+
+live link [https://employee-attrition-predictor-ycoi.onrender.com](https://employee-attrition-predictor-ycoi.onrender.com)
+
+##  what it does
+
+* predicts whether an employee is likely to leave using a trained ml model
+* retrieves hr retention strategies from a local chromadb knowledge base using rag (retrieval augmented generation)
+* combines retrieved strategies with google gemini to suggest 2 hr actions for each risky employee
+* displays all predictions and recommendations in a clean web interface
+* includes error handling and a loading spinner for better user experience
+
+---
+
+## 📁 folder structure
 
 ```
-AI_Intern_Assignment/
-├── app.py                  # Main Flask app
-├── train.py                # Model training script
-├── churn_model.pkl         # Trained Random Forest model (~3.7 MB)
-├── utils.py                # Gemini recommendation logic
-├── test_employees.csv      # Sample input file
-├── requirements.txt        # Required packages
+ai_intern_assignment/
+├── app.py                  main flask app
+├── train.py                model training script
+├── churn_model.pkl         trained random forest model
+├── utils.py                rag + gemini recommendation logic
+├── embed.py                rag content embedding script
+├── knowledge_base/
+│   └── content.md          hr strategies markdown file
+├── chroma_db/              local rag database
+├── requirements.txt        required packages
 ├── templates/
-│   ├── index.html          # Upload form
-│   ├── results.html        # Prediction + Gemini output
-│   └── error.html          # Error page for invalid CSVs
+│   ├── index.html          upload form
+│   ├── results.html        prediction + rag + gemini output
+│   └── error.html          error page for invalid csvs
 ├── static/
-│   └── style.css (optional custom CSS)
-└── README.md
+│   └── style.css           optional custom css
+└── readme.md
 ```
 
 ---
 
-## 🧠 Model Info
+##  model info
 
-- **Model Used**: Random Forest Classifier (scikit-learn)
-- **Target**: `Attrition` → `Yes`/`No`
-- **Features**: Age, Job Role, Monthly Income, Overtime, Years at Company, etc.
-- **Imbalance Handling**: SMOTE
-- ✅ **Model already included** as `churn_model.pkl`
+* model used random forest classifier (scikit-learn)
+* target attrition → yes/no
+* features age, job role, monthly income, overtime, years at company, etc.
+* imbalance handling smote
+* model already included as churn\_model.pkl
 
 ---
 
-## 🔁 Retrain the Model (Optional)
+##  retrain the model (optional)
 
-If you want to retrain the model using your own data:
+### step 1 prepare the csv
 
-### ✅ Step 1: Prepare the CSV
+your dataset should contain an attrition column with yes/no
+example filename hr.csv
 
-- Your dataset should contain an `Attrition` column with `Yes`/`No`
-- Example filename: `hr.csv`
-
-### ✅ Step 2: Use `train.py`
+### step 2 use train.py
 
 ```bash
 python train.py
 ```
 
-This will:
-- Train the model
-- Save it as `churn_model.pkl`
+this will
 
-### 💡 Custom CSV Support
+* train the model
+* save it as churn\_model.pkl
 
-If you're using a differently named file, edit this line in `train.py`:
+### custom csv support
+
+if you're using a differently named file, edit this line in train.py
 
 ```python
-df = pd.read_csv("your_file.csv")  # Change this if not using hr.csv
+df = pd.read_csv("your_file.csv")  # change this if not using hr.csv
 ```
 
 ---
 
-## 🧪 How to Run the Web App
+## how to run the web app
 
-### ✅ 1. Install dependencies
+### step 1 install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### ✅ 2. Run the Flask app
+### step 2 run the flask app
 
 ```bash
 python app.py
 ```
 
-### ✅ 3. Upload a valid CSV
+### step 3 upload a valid csv
 
-Use the provided `test_employees.csv` or your own file with matching columns.
-
----
-
-## 🤖 Gemini Recommendations
-
-- Employees flagged as at-risk get **2 HR suggestions** from **Gemini AI**
-- Uses `google-generativeai` and model: `gemini-1.5-flash`
-- Requires a valid API key from [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
+use the provided test\_employees.csv or your own file with matching columns
 
 ---
 
-## ❗ Error Handling
+## 🤖 rag + gemini recommendations
 
-If a user uploads an invalid CSV:
-- They are shown a message:  
-  > "Upload a valid file or refer to the README for what is a valid CSV file."
-
----
-
-## 🎥 Optional Enhancements
-
-- ✅ Spinner while processing
-- ✅ Clean error display
-- ✅ Styled UI with upload buffer and result table
-- ✅ “Go to Home” button for retry
+* employees flagged as at-risk get 2 hr suggestions from gemini ai
+* before calling gemini, top 2 related hr strategies are retrieved from chromadb
+* uses sentence transformers all-minilm-l6-v2 for embeddings
+* requires a valid api key from [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
 
 ---
 
-## ✅ To Push on GitHub
+##  error handling
 
-No need to ignore the model — it's under 100 MB and included.  
-Still, here’s a safe `.gitignore` suggestion:
+if a user uploads an invalid csv
+
+* they are shown a message
+
+upload a valid file or refer to the readme for what is a valid csv file
 
 ---
 
-## 📄 .gitignore
+## 🎥 optional enhancements
 
-```gitignore
-# Python cache
+* spinner while processing
+* clean error display
+* styled ui with upload buffer and result table
+* go to home button for retry
+* rag setup using local markdown knowledge base
+
+## to push on github
+
+no need to ignore the model — it's under 100 mb and included
+still, here’s a safe .gitignore suggestion
+
+```
+# python cache
 __pycache__/
 *.pyc
 
-# IDE configs
+# ide configs
 .vscode/
 .idea/
 
-# OS files
-.DS_Store
+# os files
+.ds_store
 
-# Optional: ignore large datasets
+# optional ignore large datasets
 *.csv
 
-# Keep the trained model
+# keep the trained model
 !churn_model.pkl
 ```
 
 ---
 
-## ✍️ Credits
+## credits
 
-- Dataset: IBM HR Analytics  
-- ML: scikit-learn  
-- LLM: Google Gemini  
-- Dev: [Tushar Rathor](https://github.com/Tushar-6969)
-
----
-
-## 🏁 Conclusion
-
-This project showcases how machine learning and AI agents like Gemini can be combined to:
-- Predict employee behavior
-- Support HR decision-making
-- Deliver smart insights in a clean UI
-
-🎯 Assignment-ready. Clean. Functional. AI-powered.
+* dataset ibm hr analytics
+* ml scikit-learn
+* llm google gemini
+* rag chromadb + sentence transformers
+* dev [https://github.com/tushar-6969](https://github.com/tushar-6969)
 
 ---
+
+## conclusion
+
+this project shows how ml + rag + ai agents like gemini can work together to
+
+* predict employee behavior
+* support hr decision-making
+* deliver smart insights in a clean ui
+
+assignment-ready. clean. functional. ai-powered.
