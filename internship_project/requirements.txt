@@ -1,11 +1,7 @@
-# Required Python packages for Employee Attrition Prediction app
-
-flask                   # Web framework
-pandas                  # Data manipulation
-scikit-learn            # ML model training and prediction
-google-generativeai     # Gemini API (LLM Recommendations)
-gunicorn                # For deployment (e.g., on Render)
+flask
+pandas
+scikit-learn
+google-generativeai
+gunicorn
 chromadb
-sentence_transformers
-
-# To retrain the model, ensure you have hr.csv in the root directory
+sentence-transformers
