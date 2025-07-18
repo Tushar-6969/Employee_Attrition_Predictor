@@ -1,3 +1,26 @@
+
+ RAG stands for Retrieval-Augmented Generation. It is an artificial intelligence (AI) technique that combines traditional information retrieval methods—such as search through databases or documents—with modern generative AI models, like large language models (LLMs).
+
+How RAG works:
+
+Retrieval: Before generating an answer, RAG retrieves relevant data from external sources such as databases, internal documents, or web content using search or vector-based methods.
+
+Augmentation: The retrieved information is combined with the user’s question and used as additional context for the LLM.
+
+Generation: The LLM then generates a response grounded in this up-to-date and domain-specific information, instead of relying only on its static, pre-trained knowledge.
+
+Why RAG is important:
+
+It helps large language models provide more accurate, current, and reliable answers, especially for specialized domains or when factual accuracy is critical.
+
+It reduces the risk of “hallucinations” (false or fabricated information) common in generative AI.
+
+It allows organizations to use their own proprietary or real-time data without the need for expensive retraining or fine-tuning of the AI model.
+
+Summary:
+RAG makes generative AI systems smarter and more trustworthy by “looking up” information from chosen, authoritative sources and using it to deliver informed, context-aware answers to user queries.
+ 
+ 
  Project Title:
 Employee Attrition Predictor with RAG-Enhanced Recommendations
 
