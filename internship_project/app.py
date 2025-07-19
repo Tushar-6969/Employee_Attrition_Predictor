@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 from utils import generate_recommendation
 from sklearn.preprocessing import LabelEncoder
+import os
 
 app = Flask(__name__)
 
@@ -70,6 +71,6 @@ def upload():
         print(f"⚠️ Unexpected Error: {str(e)}")
         return render_template('error.html', message="Invalid file or format. Please upload a correct CSV matching the required schema.")
 
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(debug=False, host="0.0.0.0", port=port)
