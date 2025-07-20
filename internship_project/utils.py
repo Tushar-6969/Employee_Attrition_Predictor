@@ -14,7 +14,8 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 #  Initializ models
 model = genai.GenerativeModel("gemini-2.0-flash")
-embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+embedding_model = SentenceTransformer('paraphrase-MiniLM-L3-v2')  
+
 
 # Set up ChromaDB
 client = chromadb.PersistentClient(path="./chroma_db")
