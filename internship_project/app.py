@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import os
 import pandas as pd
 import pickle
 from utils import generate_recommendation
@@ -70,5 +71,7 @@ def upload():
         print(f"⚠️ Unexpected Error: {str(e)}")
         return render_template('error.html', message="Invalid file or format. Please upload a correct CSV matching the required schema.")
 
-if __name__ == '__main__':
-    app.run()  # Default: http://127.0.0.1:5000
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
