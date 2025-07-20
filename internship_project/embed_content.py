@@ -1,4 +1,4 @@
-!pip install chromadb
+# !pip install chromadb
 
 from sentence_transformers import SentenceTransformer
 import chromadb

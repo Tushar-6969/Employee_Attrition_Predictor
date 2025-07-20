@@ -1,23 +1,25 @@
 import os
+from dotenv import load_dotenv
 import chromadb
 from sentence_transformers import SentenceTransformer
 import google.generativeai as genai
 import re
-from flask import Flask, request, jsonify
 
-# === Configure API Keys ===
+# Load .env variabls
+load_dotenv()
+
+#  Configuer Gmini API Key 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# print("api =", os.getenv("GEMINI_API_KEY"))
 
-# === Initialize models ===
+#  Initializ models
 model = genai.GenerativeModel("gemini-2.0-flash")
 embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
 
-# === Set up ChromaDB ===
+# Set up ChromaDB
 client = chromadb.PersistentClient(path="./chroma_db")
 collection = client.get_or_create_collection("employee_retention")
 
-# === Flask App ===
-app = Flask(__name__)
 
 def clean_response(text):
     text = re.sub(r"Okay,.*?(?=1\.)", "", text, flags=re.DOTALL).strip()
@@ -53,26 +55,37 @@ def generate_recommendation(row):
 
     documents = results.get('documents', [])
     if documents and documents[0]:
-        context = "\n\n".join(documents[0])
+      context = "\n\n".join(documents[0])
     else:
-        context = "No relevant HR knowledge found in the database."
+      context = "No relevant HR knowledge found in the database."
+
+    # ✅ Print the context retrieved from ChromaDB
+    print("\n==== Retrieved Context from ChromaDB ====\n")
+    print(context)
+    print("\n==== End of Context ====\n")
+
 
     prompt = f"""
-    This employee is predicted to leave.
+You are an HR expert. The following employee is at risk of leaving the company.
 
-    Employee Info:
-    - Age: {row.get('Age', 'N/A')}
-    - Job Role: {row.get('JobRole', 'N/A')}
-    - Job Satisfaction: {row.get('JobSatisfaction', 'N/A')}
-    - Overtime: {row.get('OverTime', 'N/A')}
-    - Monthly Income: {row.get('MonthlyIncome', 'N/A')}
-    - Years at Company: {row.get('YearsAtCompany', 'N/A')}
+Employee Info:
+- Age: {row.get('Age', 'N/A')}
+- Job Role: {row.get('JobRole', 'N/A')}
+- Job Satisfaction: {row.get('JobSatisfaction', 'N/A')}
+- Overtime: {row.get('OverTime', 'N/A')}
+- Monthly Income: {row.get('MonthlyIncome', 'N/A')}
+- Years at Company: {row.get('YearsAtCompany', 'N/A')}
 
-    Relevant HR Knowledge Base:
-    {context}
+Relevant HR Knowledge:
+{context}
 
-    Based on the above, suggest 2 actionable HR strategies to retain this employee.
-    """
+👉 Based on this, **suggest exactly 2 distinct and actionable HR strategies** to retain this employee.  
+👉 Format each as:  
+1. **Action:** <strategy>  
+   **Rationale:** <why it will help>  
+2. **Action:** <strategy>  
+   **Rationale:** <why it will help>
+"""
 
     try:
         response = model.generate_content(prompt)
@@ -80,18 +93,3 @@ def generate_recommendation(row):
         return cleaned
     except Exception as e:
         return f"Gemini Error: {str(e)}"
-
-# === Flask route to test via POST ===
-@app.route('/predict', methods=['POST'])
-def predict():
-    data = request.get_json()
-    if not data:
-        return jsonify({"error": "Invalid input"}), 400
-
-    result = generate_recommendation(data)
-    return jsonify({"recommendation": result})
-
-# === Main server run ===
-if __name__ == '__main__':
-    port = int(os.getenv("PORT", 8080))
-    app.run(host="0.0.0.0", port=port)
