@@ -15,7 +15,7 @@ predict employee attrition risk using ml and use a rag-enhanced gemini ai agent 
 
 ---
 
-live link [https://employee-attrition-predictor-ycoi.onrender.com](https://employee-attrition-predictor-ycoi.onrender.com)
+live link [https://employee-attrition-predictor-1xze.onrender.com/](https://employee-attrition-predictor-1xze.onrender.com/)
 
 ##  what it does
 
