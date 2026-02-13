@@ -1,4 +1,4 @@
-# ai intern assignment — use case 2
+# employee-attrition-predictor
 
 ### 👤 employee attrition risk prediction + rag-enhanced hr recommendation agent
 
